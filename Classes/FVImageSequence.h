@@ -14,6 +14,7 @@
 	int numberOfImages;
 	int current;
 	int previous;
+    NSTimeInterval previousTimestamp;
 	NSString *extension;
 	int increment;
 }
