@@ -14,6 +14,7 @@
     NSTimer *_timer;
     CGFloat _speed;
     NSTimeInterval _interval;
+    NSTimeInterval _dInterval;
 }
 @synthesize prefix, numberOfImages, extension, increment;
 
@@ -78,6 +79,7 @@
 {
     [super touchesEnded:touches withEvent:event];
     _interval = 0.01;
+    _dInterval = 0.0002;
     _timer =  [[NSTimer scheduledTimerWithTimeInterval:_interval
                                                 target:self
                                               selector:@selector(onTimer:)
@@ -88,7 +90,7 @@
 
 - (void)onTimer:(NSTimer *)timer
 {
-    if (_speed > 0) { current += 1; } else { current -= 1; }
+    if (_speed > 0) { current -= 1; } else { current += 1; }
     
     if(current >= numberOfImages)
 		current = 0;
@@ -97,8 +99,9 @@
     NSLog(@"onTimer: set current to: %d", current);
     [self update];
     
-    _interval += 0.0002;
-    if (_interval < 0.05) {
+    _interval += _dInterval;
+    _dInterval *= 1.01;
+    if (_interval < 0.2) {
         [_timer release];
         _timer =  [[NSTimer scheduledTimerWithTimeInterval:_interval
                                                     target:self
